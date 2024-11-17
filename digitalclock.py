@@ -35,32 +35,31 @@ DIGITS = {
 }
 
 def display_time(time_str):
-    rows = ["", "", "]
+    rows = ["", "", ""]
     for char in time_str:
         if char in DIGITS:
             digit = DIGITS[char]
-            for i in range (3):
+            for i in range(3):
                 rows[i] += digit[i] + "  "
-      
-     else:
-         raise ValueError(f"Caractere invalido no horário: {char}")
-         
-         for row in rows:
-             print(row)
-    
-    def main():
-        time_input = input("Digite o horário no formato HH:MM (24h ou 12h): ").strip()
-        
-        if not (":" in time_input and len(time_input.split(":")) == 2):
-            print("Formato inválido. Use HH:MM.")
-            return
-    
-    for char in time_input:
-        if char not in DIGITS and char != ":"
-        print("Caractere inválido no horario.")
+        else:
+            raise ValueError(f"Caractere inválido no horário: {char}")
+
+    for row in rows:
+        print(row)
+
+def main():
+    time_input = input("Digite o horário no formato HH:MM (24h ou 12h): ").strip()
+
+    if not (":" in time_input and len(time_input.split(":")) == 2):
+        print("Formato inválido. Use HH:MM.")
         return
-    
+
+    for char in time_input:
+        if char not in DIGITS and char != ":":
+            print("Caractere inválido no horário.")
+            return
+
     display_time(time_input)
-    
-    if __name__ == "__main__":
-        main()
+
+if __name__ == "__main__":
+    main()
