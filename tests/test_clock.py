@@ -42,8 +42,8 @@ class TestClock(unittest.TestCase):
         result = render("12:34")
         self.assertIsInstance(result, str)
         self.assertEqual(len(result.split("\n")), 3)
-        # Verificar se tem representação de :
-        self.assertIn("  . ", result)
+        # Verificar se tem representação de : (bullet character)
+        self.assertIn(" ● ", result)
 
     def test_get_display_string_24h(self):
         result = get_display_string("14:30", ampm=False, scale=1, color=None)

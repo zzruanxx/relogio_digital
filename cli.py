@@ -77,11 +77,22 @@ def live_clock(ampm: bool, blink: bool, scale: int, color: str | None, *, second
             art = render(base_display, scale=scale, color=color)
 
             lines = art.splitlines()
+            art_width = len(lines[0]) if lines else 0
+            
+            # Adiciona linha em branco para espaçamento
+            if suffix or show_date:
+                lines.append("")
+            
             if suffix:
-                lines.append(suffix)
+                # Centraliza AM/PM
+                suffix_padding = " " * ((art_width - len(suffix)) // 2)
+                lines.append(f"{suffix_padding}{suffix}")
+            
             if show_date:
-                # Formato de data legível e neutro
-                lines.append(now.strftime("%d/%m/%Y"))
+                # Centraliza data
+                date_str = now.strftime("%d/%m/%Y")
+                date_padding = " " * ((art_width - len(date_str)) // 2)
+                lines.append(f"{date_padding}{date_str}")
 
             frame = _layout_output(lines, align=align, border=border)
             # Limpa e posiciona no topo
@@ -123,7 +134,11 @@ def get_display_string(time_str: str, ampm: bool, scale: int, color: str | None)
     if ampm:
         shown = to_12h(h, m).split()[0]
         suffix = "AM" if h < 12 else "PM"
-        return render(shown, scale=scale, color=color) + f"\n{suffix}"
+        art = render(shown, scale=scale, color=color)
+        # Centraliza o sufixo AM/PM com o relógio
+        art_width = len(art.splitlines()[0])
+        suffix_padding = " " * ((art_width - len(suffix)) // 2)
+        return art + f"\n{suffix_padding}{suffix}"
     else:
         shown = f"{h:02d}:{m:02d}"
         return render(shown, scale=scale, color=color)
