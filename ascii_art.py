@@ -30,14 +30,17 @@ DIGITS = {
           "|__|",
           " __|"],
     ":": ["    ",
-          "  . ",
-          "  . "]
+          " ●  ",
+          " ●  "],
+    " ": ["    ",
+          "    ",
+          "    "]
 }
 
 def build_ascii(time_str: str, scale: int = 1) -> str:
     """
     Constrói representação ASCII do horário.
-    scale: aumenta largura/altura (apenas replicação simples).
+    scale: aumenta largura/altura com melhor proporção.
     """
     rows = ["", "", ""]
     for ch in time_str:
@@ -47,18 +50,21 @@ def build_ascii(time_str: str, scale: int = 1) -> str:
         for i in range(3):
             segment = pattern[i]
             if scale > 1:
-                # Expansão simples horizontal: duplicar caracteres internos
+                # Expansão horizontal melhorada: duplica cada caractere
                 expanded = ""
                 for c in segment:
-                    expanded += c * (2 if c.strip() and c not in (" ", ".") else 1 * scale)
+                    expanded += c * scale
                 segment = expanded
-            rows[i] += segment + "  "
+            rows[i] += segment + (" " * scale)
+    
     if scale > 1:
-        # Expansão vertical grosseira duplicando linhas intermediárias
+        # Expansão vertical: duplica cada linha
         scaled_rows = []
         for line in rows:
-            scaled_rows.extend([line] * scale)
+            for _ in range(scale):
+                scaled_rows.append(line)
         rows = scaled_rows
+    
     return "\n".join(rows)
 
 def colorize(text: str, color: str | None) -> str:
